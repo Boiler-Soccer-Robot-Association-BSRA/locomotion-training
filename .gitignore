@@ -1,0 +1,86 @@
+# Local agent instructions and tool state
+AGENTS.md
+AGENTS.local.md
+CLAUDE.md
+CLAUDE.local.md
+.agents/
+.claude/
+.codex/
+.cursor/
+.aider*
+.mcp.json
+
+# Local credentials and environment files
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+.envrc
+.direnv/
+.aws/
+credentials.json
+*.pem
+*.key
+
+# Local issue drafting (GitHub Issues are the shared task tracker)
+ISSUES_TO_CREATE.md
+
+# Python environments, caches, build outputs, and tooling
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.pytype/
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+.ipynb_checkpoints/
+.uv-cache/
+pip-wheel-metadata/
+
+# Editors, OS metadata, and temporary files
+.idea/
+.vscode/
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+*.log
+
+# Generated experiments, downloaded assets, and large artifacts
+/artifacts/
+/checkpoints/
+/runs/
+/results/
+/logs/
+/wandb/
+/mlruns/
+/data/
+/datasets/
+/robot_models/external/
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.zip
+*.mp4
+*.webm
+
+# Keep uv.lock, reviewed MJCF/URDF files, and configuration examples tracked.
