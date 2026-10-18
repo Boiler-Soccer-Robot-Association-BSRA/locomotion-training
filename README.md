@@ -2,8 +2,6 @@
 
 Boiler Soccer Robot Association — reinforcement learning and simulation experiments.
 
-**RL Lead:** Quinn Winkler · **Programming Director:** Adhitya Vasudevan
-
 ## Purpose and current status
 
 Build an OP3 locomotion baseline in simulation while learning robot modeling, feedback control, reinforcement learning, and evaluation. This is a learning repository whose models, measurements, and lessons will inform a future locomotion repository.

@@ -1,49 +1,48 @@
 # OP3 interfaces to define
 
-This is the shared specification outline for the planned OP3 implementation. Each section describes what its owners need to agree on and document before dependent code is integrated. The concrete fields, dimensions, rates, gains, and thresholds remain to be filled in from the validated model.
+Use this outline to agree on what each component receives, produces, and needs from the others. Fill in concrete fields, dimensions, rates, gains, and thresholds as the OP3 model is validated.
 
-The agreed control approach is **OP3 model -> fixed-pose PD baseline -> direct locomotion training**. The policy produces bounded joint-position offsets from a nominal pose, tracked by the same PD controller as the baseline. Zero policy action selects that pose. Balance is learned within locomotion; there is no separate learned-balance milestone. See [ARCHITECTURE.md](ARCHITECTURE.md) for the design rationale.
+The approach is **OP3 model -> fixed-pose PD baseline -> direct locomotion training**. The policy supplies joint-position offsets from a nominal pose; zero action selects the PD-only baseline. Track design decisions and implementation work in GitHub Issues.
 
-## Model and actuator mapping
+When an interface changes, update this document, shared types/configuration, affected callers, and tests in the same PR. Have contributors on both sides review it.
 
-**Owners: model and controller contributors.** Record the MJCF entry point, referenced assets, provenance/version, joint and actuator names, controlled-joint order, torso/foot identifiers, nominal pose, and physical limits. Define the mapping between policy joints, simulator state, and actuator inputs, including any gearing or sign changes. Validate names and dimensions at model load time.
+## Robot model
 
-## Coordinate frames and units
+Describe the physical model and the information other components need to use it.
 
-**Owners: model and environment contributors.** Define axis directions, world/body frames, quaternion order, and where velocities are measured. Specify units for angles, angular/linear velocities, forces, torques, and time; state the required conversions at module boundaries. Avoid ambiguous names such as `velocity` without a frame and unit.
+- **Assets:** MJCF entry point, referenced assets, source/license, and model revision.
+- **Mapping:** joint/actuator names and order, torso/foot identifiers, nominal pose, and physical limits. Explain gearing and sign changes between joint torques and actuator inputs; validate names and dimensions when loading.
+- **Conventions:** axis directions, world/body frames, quaternion order, velocity measurement locations, units, and required conversions.
 
-## Actions and PD control
+## PD controller
 
-**Owners: controller and environment contributors.** Specify action shape, dtype, joint ordering, bounds, per-joint offset scales, and clipping. Define how nominal pose plus policy offset becomes a joint target and how PD feedback produces bounded actuator commands. Record gain units, torque limits, and which joints remain fixed. Both baseline and policy evaluation must use this implementation and configuration.
+Define how policy actions become joint targets and how the shared controller tracks them.
 
-## Simulation and control timing
+- **Inputs:** action shape, dtype, joint order, bounds, per-joint offset scales, and clipping. Specify which joints remain fixed.
+- **Control:** nominal pose plus offset -> joint target -> PD feedback -> bounded actuator command. Record gains and their units, torque limits, and required joint feedback.
+- **Timing:** PD update period and target holding between policy updates. The fixed-pose baseline and learned policy must use the same controller and settings.
 
-**Owners: model, controller, and environment contributors.** Choose the physics timestep, PD update period, policy update period, and number of physics steps per policy action. State when state is sampled and rewards/metrics are computed, how targets are held between policy updates, and whether reward terms are scaled by elapsed simulation time.
+## Environment
 
-## Robot state and policy observations
+Define the simulation loop and the state shared with the policy, rewards, and evaluation.
 
-**Owners: environment, reward, and evaluation contributors.** List the named state fields available to rewards/metrics and separately define the policy observation layout. For each field, specify source, shape, dtype, units, frame, and normalization. Identify any simulation-only information excluded from policy observations. Supply representative synthetic states so rewards and metrics can be tested before the MJCF is complete.
+- **State and observations:** named state fields for rewards/metrics and a separate policy observation layout. Specify sources, shapes, dtypes, units, frames, normalization, and any simulation-only fields. Supply synthetic states for independent tests.
+- **Stepping:** physics timestep, policy period, physics steps per action, and when state, rewards, and metrics are sampled.
+- **Commands:** forward-speed units, frame, range, sampling, and update schedule, including zero speed. Explain the future `(vx, vy, wz)` convention and how commands enter observations and evaluation.
+- **Episodes:** reset pose/state, randomization, seeds, horizon, and fall criteria. Distinguish termination from time-limit truncation; reset controller history, previous actions, and metric accumulators. Validate physical thresholds against the model.
 
-## Motion commands
+## Rewards
 
-**Owners: environment and training contributors.** Define the initial forward-speed command's units, frame, allowed range, sampling, and update schedule, including a zero-speed command. Reserve and explain the future `(vx, vy, wz)` convention for planar velocity and yaw rate. Document how commands appear in observations and evaluation scenarios.
+Specify the reward function's inputs, calculations, and outputs so it can be developed independently of simulator indexing.
 
-## Reset and episode endings
+- **Inputs:** required state, command, current/previous action, and which simulation step each value represents.
+- **Components:** velocity tracking, uprightness, effort, and smoothness, with units, signs, weights, and time scaling. Distinguish actuator effort from policy action magnitude.
+- **Outputs and checks:** scalar total plus named components for logging. Test formulas with controlled states before tuning weights in simulation. Balance incentives belong within locomotion training.
 
-**Owners: environment and evaluation contributors.** Specify reset pose/state, randomization, seeding, episode horizon, and fall criteria. Distinguish task termination from time-limit truncation. Define resets for controller history, previous actions, and metric accumulators; choose physical thresholds only after model validation.
+## Training and evaluation
 
-## Reward inputs and outputs
+Define how experiments are constructed, saved, compared, and reproduced.
 
-**Owners: reward and environment contributors.** Define the function inputs, reward-component names, scalar total, weighting, sign conventions, and time scaling. State which step's state/action is used and how previous actions are supplied. Explain velocity tracking, uprightness, effort, and smoothness calculations; distinguish actuator effort from policy action magnitude. Return individual components for logging and test formulas with controlled states before tuning weights in simulation.
-
-## Evaluation and metrics
-
-**Owners: evaluation and environment contributors.** Define per-step information fields and the report schema, including fall counts/rates, upright time, tracking error, return, and episode length. State units, aggregation, evaluation seeds, command scenarios, and disturbances. Ensure PD-only and learned controllers share conditions; distinguish synthetic tests from measured simulations.
-
-## Configuration and checkpoints
-
-**Owners: training and evaluation contributors.** Specify the shared environment-construction entry point, configuration sections, and validation rules. Record model revision, interface version, joint ordering, control settings, reward settings, seed, and software versions with checkpoints. Define how evaluation restores observation normalization and detects incompatible models or action/observation layouts. Keep generated artifacts outside tracked source.
-
-## Validation and interface changes
-
-**Owners: all affected contributors.** Define contract tests for shapes, units, mappings, and reset/step behavior, plus `check_env` and a short train/save/reload/evaluate check. Interface changes should update this document, shared types/configuration, affected callers, and tests in the same PR, with review from the contributors on both sides of the boundary.
+- **Configuration and checkpoints:** shared environment-construction entry point, configuration sections, and validation rules. Save model/interface revisions, joint order, control/reward settings, seed, and software versions. Specify how to restore normalization and reject incompatible models or observation/action layouts; keep generated artifacts outside tracked source.
+- **Metrics and comparisons:** per-step information and report fields for falls, upright time, tracking error, return, and episode length, including units and aggregation. Define seeds, commands, and disturbances; compare PD-only and learned controllers under matching conditions. Distinguish synthetic tests from measured simulations.
+- **Integration checks:** tests for shapes, units, mappings, reset/step behavior, `check_env`, and a short train/save/reload/evaluate cycle.
