@@ -1,0 +1,3 @@
+# Future MJCF path/revision, joint and actuator mappings, body references,
+# nominal pose, action scales, and coordinate/unit conventions; no unverified values.
+# Read by config/loader.py for environments/op3_env.py and robot/robot_state.py.

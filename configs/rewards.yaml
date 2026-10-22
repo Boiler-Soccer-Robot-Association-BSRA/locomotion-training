@@ -1,0 +1,3 @@
+# Future reward enable flags, weights, scales, and thresholds; no formulas or indices.
+# Read by config/loader.py and passed through environments/op3_env.py to
+# rewards/calculate_rewards.py; physical values require model validation.
