@@ -1,7 +1,5 @@
 # OP3 architecture flowcharts
 
-These target-design diagrams come from [FLOWCHARTS.js](../FLOWCHARTS.js), with module labels aligned to [the architecture](../ARCHITECTURE_SUMMARY.md). The OP3 modules are placeholders.
-
 ## Initialization and training setup
 
 Shows how configuration and the robot model feed environment construction and PPO training.
@@ -37,7 +35,7 @@ flowchart TD
 
 ## One policy step
 
-Shows the action, physics, state-reading, and reward sequence that returns a transition to PPO.
+This is what happens inside op3_env.py. Shows the action, physics, state-reading, and reward sequence that returns a transition to PPO.
 
 ```mermaid
 flowchart TD
