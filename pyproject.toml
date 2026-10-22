@@ -41,4 +41,5 @@ explicit = true
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "examples/humanoid_v5/tests"]
+addopts = ["--import-mode=importlib"]
 pythonpath = ["."]

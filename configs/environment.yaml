@@ -1,0 +1,3 @@
+# Future physics/policy timing, speed commands, observations, episode horizon,
+# resets, termination thresholds, and seed settings.
+# Read by config/loader.py for environments/create_environment.py and op3_env.py.

@@ -1,0 +1,3 @@
+# Future single-environment PPO hyperparameters, training duration, seed,
+# checkpoint paths, and TensorBoard logging settings.
+# Read by config/loader.py for training/train.py; outputs belong under artifacts/.
