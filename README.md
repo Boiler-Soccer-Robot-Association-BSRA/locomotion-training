@@ -18,7 +18,7 @@ Build an OP3 locomotion baseline in simulation while learning robot modeling, fe
 
 Zero policy action selects the nominal pose. Balance is learned within the locomotion task. MuJoCo position actuators provide the initial control behavior; no separate Python controller is planned. Parallel environments, OP3 evaluation/inference entry points, hardware deployment, and extensive domain randomization are deferred.
 
-Read [ARCHITECTURE_SUMMARY.md](ARCHITECTURE_SUMMARY.md) for the target design and interface contracts, and [the flowcharts](docs/FLOWCHARTS.md) for initialization and runtime data flow. Physical integration and reward tuning require the actual model.
+Read [the flowcharts](docs/FLOWCHARTS.md) for initialization and runtime data flow. Physical integration and reward tuning require the actual model.
 
 ## Setup and runnable example
 
@@ -77,7 +77,6 @@ tests/
   test_training_smoke.py
 docs/                  Architecture flowcharts
 artifacts/             Generated outputs (ignored)
-ARCHITECTURE_SUMMARY.md Target architecture and file responsibilities
 pyproject.toml         Shared Python dependencies and test configuration
 uv.lock                Resolved dependency versions
 README.md              Repository overview and setup
@@ -89,8 +88,8 @@ Each package directory also contains an empty `__init__.py`. The OP3 Python and 
 
 Use focused branches and reviewed PRs; see [CONTRIBUTING.md](CONTRIBUTING.md). GitHub Issues are the shared task tracker.
 
-- Start with the [architecture summary](ARCHITECTURE_SUMMARY.md) and [flowcharts](docs/FLOWCHARTS.md).
-- Agree on inputs, outputs, units, and acceptance checks using the architecture summary before integrating dependent modules.
+- Start with the [flowcharts](docs/FLOWCHARTS.md) and the purpose comments in the package modules.
+- Agree on inputs, outputs, units, and acceptance checks in the relevant GitHub Issue before integrating dependent modules.
 - Record measured results, model provenance, and failure cases in the relevant issue or pull request.
 
 Local `AGENTS.md`, `CLAUDE.md`, environment secrets, and editor state are ignored. Share project requirements through the tracked documentation.
