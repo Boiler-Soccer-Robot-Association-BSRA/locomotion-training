@@ -8,7 +8,7 @@ Build an OP3 locomotion baseline in simulation while learning robot modeling, fe
 
 **Implemented:** a self-contained [Humanoid-v5 example](examples/humanoid_v5/README.md) with a MuJoCo smoke check, configurable PPO training, checkpoint save/load, TensorBoard logging, evaluation reports, and configuration tests.
 
-**Planned:** the OP3 MJCF model, fixed-pose PD baseline, locomotion environment, rewards, training, and evaluation. Their root folders currently contain scope READMEs. No OP3 controller or trained OP3 policy is included yet.
+**Planned:** the OP3 MJCF model, fixed-pose PD baseline, locomotion environment, rewards, training, and evaluation. The package skeleton lives under `src/bsra_locomotion/`, with scope notes in the package folders and `docs/`. No OP3 controller or trained OP3 policy is included yet.
 
 ## OP3 roadmap
 
@@ -43,21 +43,28 @@ All example outputs are written to the ignored `artifacts/examples/humanoid_v5/`
 ## Repository layout
 
 ```text
-.github/CODEOWNERS      Default reviewer: @grmpn
-.gitignore             Local tooling, credentials, caches, and artifacts
+src/
+  bsra_locomotion/
+    __init__.py
+    config/            Configuration loading (planned)
+    robot/             Shared robot state (planned)
+    environments/      OP3 Gymnasium environment (planned)
+    rewards/           OP3 locomotion reward functions (planned)
+    training/          OP3 locomotion training (planned)
+configs/               OP3 experiment configuration (planned)
+robot_models/
+  op3/
+    assets/            OP3 model assets (planned)
+examples/humanoid_v5/   Runnable example, its config, and its tests
+tests/                 OP3 tests (planned)
+docs/                  Interfaces, PD control, and evaluation scope notes
+artifacts/             Generated outputs (ignored)
 pyproject.toml         Shared Python dependencies and test configuration
 uv.lock                Resolved dependency versions
-examples/humanoid_v5/  Runnable example, its config, and its tests
-robot_models/         OP3 MJCF and provenance (planned)
-controllers/          Shared OP3 PD controller (planned)
-environments/         OP3 Gymnasium environment (planned)
-rewards/              OP3 locomotion reward functions (planned)
-configs/              OP3 experiment configuration (planned)
-training/             OP3 locomotion training (planned)
-evaluation/           OP3 baseline comparisons and metrics (planned)
-tests/                OP3 tests (planned)
-docs/                 Architecture, interfaces, model checklist, experiment log
+README.md              Repository overview and setup
 ```
+
+Each package directory contains an empty `__init__.py`. OP3 implementation, test, YAML, and XML files are not created yet. The planned [PD controller](docs/PD_CONTROL.md) and [evaluation](docs/EVALUATION.md) scopes are documented under `docs/`.
 
 ## Contributing and planning
 
