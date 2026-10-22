@@ -8,7 +8,7 @@ Build an OP3 locomotion baseline in simulation while learning robot modeling, fe
 
 **Implemented:** a self-contained [Humanoid-v5 example](examples/humanoid_v5/) with a MuJoCo smoke check, configurable PPO training, checkpoint save/load, TensorBoard logging, evaluation reports, and configuration tests.
 
-**Scaffolded:** the OP3 package under `src/bsra_locomotion/`, four YAML configuration files, and five test files. These are comment-only placeholders describing their future responsibilities and interactions; OP3 behavior and tests are not implemented. No OP3 XML model or trained policy is included yet.
+**Scaffolded:** the OP3 package under `src/bsra_locomotion/`, four YAML configuration files, and six test files. These are comment-only placeholders describing their future responsibilities and interactions; OP3 behavior and tests are not implemented. No OP3 XML model or trained policy is included yet.
 
 ## OP3 roadmap
 
@@ -71,6 +71,7 @@ robot_models/
 examples/humanoid_v5/   Runnable example, its config, and its tests
 tests/
   test_config.py
+  test_op3_model.py
   test_robot_state.py
   test_rewards.py
   test_op3_env.py
